@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PlanMyStudy - Générateur de Planning de Révision</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f3f4f6;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #2563eb;
+    }
+    .container {
+      max-width: 400px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+    button:hover {
+      background: #1d4ed8;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #f9fafb;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>📘 PlanMyStudy</h1>
+  <div class="container">
+    <p>Génère ton planning de révision en quelques secondes.</p>
+    <label>Matière</label>
+    <input id="subject" type="text" placeholder="Ex: Mathématiques">
+    
+    <label>Date d'examen</label>
+    <input id="examDate" type="date">
+
+    <label>Nombre de jours de révision</label>
+    <input id="days" type="number" placeholder="Ex: 5">
+    
+    <button onclick="generatePlan()">Créer le planning</button>
+    
+    <div id="output" class="result"></div>
+  </div>
+
+  <script>
+    function generatePlan() {
+      const subject = document.getElementById('subject').value;
+      const examDate = new Date(document.getElementById('examDate').value);
+      const days = parseInt(document.getElementById('days').value);
+      const output = document.getElementById('output');
+      
+      if (!subject || !examDate || !days) {
+        output.innerHTML = "<b>⚠️ Remplis tous les champs.</b>";
+        return;
+      }
+
+      const today = new Date();
+      let plan = `<b>Planning de révision pour ${subject}</b><br>`;
+      for (let i = 0; i < days; i++) {
+        let day = new Date();
+        day.setDate(today.getDate() + i);
+        plan += `📅 ${day.toLocaleDateString('fr-FR')} : Réviser le chapitre ${i + 1}<br>`;
+      }
+
+      plan += `<br>🧠 Examen prévu le ${examDate.toLocaleDateString('fr-FR')}`;
+      output.innerHTML = plan;
+    }
+  </script>
+</body>
+      </html>
