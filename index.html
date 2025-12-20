@@ -1,166 +1,172 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>PlanMyStudy</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>PlanMyStudy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f3f4f6;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      max-width: 550px;
-      margin: 30px auto;
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-    }
-    h1 {
-      text-align: center;
-      color: #111827;
-    }
-    p {
-      text-align: center;
-      color: #4b5563;
-    }
-    label {
-      font-weight: bold;
-      margin-top: 15px;
-      display: block;
-    }
-    input, select, button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 8px;
-      font-size: 16px;
-    }
-    button {
-      background: #10b981;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 20px;
-    }
-    button:hover {
-      background: #059669;
-    }
-    .result {
-      margin-top: 25px;
-      background: #ecfdf5;
-      padding: 15px;
-      border-radius: 8px;
-      white-space: pre-line;
-    }
-    .motivation {
-      margin-top: 15px;
-      background: #e0f2fe;
-      padding: 15px;
-      border-radius: 8px;
-      font-style: italic;
-    }
-  </style>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f3f4f6;
+  margin: 0;
+}
+.container {
+  max-width: 650px;
+  margin: 30px auto;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+}
+h1 { text-align: center; }
+p { text-align: center; color: #555; }
+label { font-weight: bold; margin-top: 15px; display: block; }
+input, select, button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  font-size: 16px;
+}
+button {
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+button.secondary {
+  background: #3b82f6;
+}
+.cards {
+  margin-top: 20px;
+}
+.card {
+  background: #ecfdf5;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+.motivation {
+  background: #e0f2fe;
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 15px;
+  font-style: italic;
+}
+.premium {
+  background: #fef3c7;
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 20px;
+  opacity: 0.6;
+}
+.lock {
+  text-align: center;
+  font-weight: bold;
+  margin-top: 10px;
+}
+</style>
 </head>
 
 <body>
 
 <div class="container">
-  <h1>📚 PlanMyStudy</h1>
-  <p>Un planning de révision adapté à ton examen et à ton état mental</p>
+<h1>📚 PlanMyStudy</h1>
+<p>Un planning simple, humain et efficace</p>
 
-  <label>Matières à réviser</label>
-  <input id="subjects" type="text" placeholder="Ex : Maths, Droit, Physique">
+<label>Matières</label>
+<input id="subjects" placeholder="Ex : Maths, Physique">
 
-  <label>Date de l'examen</label>
-  <input id="examDate" type="date">
+<label>Date de l'examen</label>
+<input id="examDate" type="date">
 
-  <label>Ton état avant l'examen</label>
-  <select id="mentalState">
-    <option value="">-- Sélectionne --</option>
-    <option value="stressed">😰 Très stressé</option>
-    <option value="normal">😐 Normal</option>
-    <option value="confident">😌 Confiant</option>
-  </select>
+<label>État psychologique</label>
+<select id="mental">
+  <option value="">-- Choisir --</option>
+  <option value="stressed">😰 Stressé</option>
+  <option value="normal">😐 Normal</option>
+  <option value="confident">😌 Confiant</option>
+</select>
 
-  <button onclick="generatePlan()">Générer mon planning personnalisé</button>
+<button onclick="generate()">Générer mon planning</button>
+<button class="secondary" onclick="share()">Partager mon planning</button>
 
-  <div id="output" class="result"></div>
-  <div id="motivation" class="motivation"></div>
+<div id="cards" class="cards"></div>
+<div id="motivation" class="motivation"></div>
+
+<div class="premium">
+🔒 MODE PREMIUM  
+- Créneaux horaires précis  
+- Suivi de discipline  
+- Ajustement automatique  
+<div class="lock">Disponible bientôt</div>
+</div>
+
 </div>
 
 <script>
-function generatePlan() {
+function generate() {
   const subjects = document.getElementById("subjects").value;
   const examDate = document.getElementById("examDate").value;
-  const mentalState = document.getElementById("mentalState").value;
-  const output = document.getElementById("output");
-  const motivationDiv = document.getElementById("motivation");
+  const mental = document.getElementById("mental").value;
+  const cards = document.getElementById("cards");
+  const motivation = document.getElementById("motivation");
 
-  if (!subjects || !examDate || !mentalState) {
-    output.innerText = "❌ Merci de remplir tous les champs.";
-    motivationDiv.innerText = "";
+  if (!subjects || !examDate || !mental) {
+    alert("Merci de remplir tous les champs");
     return;
   }
 
-  const today = new Date();
-  const exam = new Date(examDate);
-  const diffTime = exam - today;
-  const daysLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  const daysLeft = Math.ceil((new Date(examDate) - new Date()) / 86400000);
+  const hours = mental === "stressed" ? 1.5 : mental === "normal" ? 2 : 2.5;
+  const list = subjects.split(",");
 
-  if (daysLeft <= 0) {
-    output.innerText = "❌ La date de l'examen doit être dans le futur.";
-    motivationDiv.innerText = "";
-    return;
+  cards.innerHTML = "";
+  let savedText = `Jours avant l'examen : ${daysLeft}\n`;
+
+  for (let i = 1; i <= Math.min(daysLeft, 5); i++) {
+    let card = `<div class="card"><strong>Jour ${i}</strong><br>`;
+    list.forEach(s => card += `• ${s.trim()} : ${hours}h<br>`);
+    card += "Pause + révision légère</div>";
+    cards.innerHTML += card;
+
+    savedText += `Jour ${i} : ${hours}h par matière\n`;
   }
 
-  const subjectList = subjects.split(",");
-  let hoursPerDay = 2;
-  let motivationMessage = "";
+  let message =
+    mental === "stressed"
+    ? "Avance calmement. Même un petit effort quotidien, suivi avec discipline, peut te mener loin."
+    : mental === "normal"
+    ? "Tu es dans un bon équilibre. Suis ce planning sérieusement : la discipline construit le succès."
+    : "Tu es confiant. Transforme cette confiance en résultats concrets grâce à la discipline.";
 
-  if (mentalState === "stressed") {
-    hoursPerDay = 1.5;
-    motivationMessage =
-      "Tu ressens du stress, et c’est normal. Ce planning est volontairement allégé pour t’aider à avancer sans te surcharger. Mais rappelle-toi : même un planning simple n’a de valeur que si tu le respectes. La discipline, même sur de petites sessions, est la clé de ta réussite.";
-  } else if (mentalState === "normal") {
-    hoursPerDay = 2;
-    motivationMessage =
-      "Tu es dans un bon état d’esprit. Ce planning est équilibré et réaliste. Si tu le suis avec régularité et discipline, jour après jour, tu verras des progrès concrets. La réussite vient rarement de la motivation seule, mais de la constance.";
-  } else {
-    hoursPerDay = 2.5;
-    motivationMessage =
-      "Tu te sens confiant, c’est une force. Utilise cette énergie pour rester discipliné et suivre ce planning jusqu’au bout. La confiance sans discipline s’épuise, mais la discipline transforme la confiance en succès réel.";
-  }
-
-  let plan = `📅 Jours avant l'examen : ${daysLeft} jours\n\n`;
-  plan += "📘 PLANNING DES PROCHAINS JOURS\n\n";
-
-  const daysToShow = Math.min(daysLeft, 5);
-
-  for (let i = 1; i <= daysToShow; i++) {
-    plan += `Jour ${i} :\n`;
-    subjectList.forEach(subject => {
-      plan += `- ${subject.trim()} : ${hoursPerDay}h\n`;
-    });
-    plan += "Pause + révision légère le soir\n\n";
-  }
-
-  plan += "💡 Conseils clés :\n";
-  plan += "- Suivre le planning sans négocier avec soi-même\n";
-  plan += "- Réviser sans téléphone\n";
-  plan += "- Bien dormir\n";
-
-  output.innerText = plan;
-  motivationDiv.innerText =
+  motivation.innerText =
     "💬 Message de motivation\n\n" +
-    motivationMessage +
-    "\n\n🔑 Rappelle-toi : ce planning peut vraiment t’aider, mais seulement si tu le respectes. La discipline, même imparfaite, bat toujours la motivation irrégulière.";
+    message +
+    "\n\nRappelle-toi : ce planning fonctionne seulement si tu le respectes chaque jour.";
+
+  localStorage.setItem("plan", savedText);
 }
+
+function share() {
+  const text = localStorage.getItem("plan");
+  if (!text) {
+    alert("Génère d'abord un planning");
+    return;
+  }
+  navigator.clipboard.writeText(text);
+  alert("Planning copié ! Tu peux le partager.");
+}
+
+window.onload = () => {
+  if (localStorage.getItem("plan")) {
+    document.getElementById("motivation").innerText =
+      "📌 Ton dernier planning est toujours enregistré.";
+  }
+};
 </script>
 
 </body>
 </html>
-
+  
