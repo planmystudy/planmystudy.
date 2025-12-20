@@ -124,15 +124,15 @@ function generatePlan() {
   if (mentalState === "stressed") {
     hoursPerDay = 1.5;
     motivationMessage =
-      "Tu ressens beaucoup de stress, et c’est normal. L’important n’est pas d’en faire trop, mais d’avancer un pas après l’autre. Fais-toi confiance, tu progresses plus que tu ne le crois.";
+      "Tu ressens du stress, et c’est normal. Ce planning est volontairement allégé pour t’aider à avancer sans te surcharger. Mais rappelle-toi : même un planning simple n’a de valeur que si tu le respectes. La discipline, même sur de petites sessions, est la clé de ta réussite.";
   } else if (mentalState === "normal") {
     hoursPerDay = 2;
     motivationMessage =
-      "Tu es dans un bon état d’esprit. En suivant ce planning régulièrement, tu construis une vraie confiance. Continue comme ça, tu es sur la bonne voie.";
+      "Tu es dans un bon état d’esprit. Ce planning est équilibré et réaliste. Si tu le suis avec régularité et discipline, jour après jour, tu verras des progrès concrets. La réussite vient rarement de la motivation seule, mais de la constance.";
   } else {
     hoursPerDay = 2.5;
     motivationMessage =
-      "Tu te sens confiant, c’est une force. Utilise cette énergie pour rester régulier, sans te surcharger. La constance fera la différence le jour de l’examen.";
+      "Tu te sens confiant, c’est une force. Utilise cette énergie pour rester discipliné et suivre ce planning jusqu’au bout. La confiance sans discipline s’épuise, mais la discipline transforme la confiance en succès réel.";
   }
 
   let plan = `📅 Jours avant l'examen : ${daysLeft} jours\n\n`;
@@ -149,15 +149,18 @@ function generatePlan() {
   }
 
   plan += "💡 Conseils clés :\n";
+  plan += "- Suivre le planning sans négocier avec soi-même\n";
   plan += "- Réviser sans téléphone\n";
-  plan += "- Faire des pauses régulières\n";
   plan += "- Bien dormir\n";
 
   output.innerText = plan;
-  motivationDiv.innerText = "💬 Message de motivation\n\n" + motivationMessage;
+  motivationDiv.innerText =
+    "💬 Message de motivation\n\n" +
+    motivationMessage +
+    "\n\n🔑 Rappelle-toi : ce planning peut vraiment t’aider, mais seulement si tu le respectes. La discipline, même imparfaite, bat toujours la motivation irrégulière.";
 }
 </script>
 
 </body>
 </html>
-  
+
