@@ -77,28 +77,32 @@
   </div>
 
   <script>
-    function generatePlan() {
-      const subject = document.getElementById('subject').value;
-      const examDate = new Date(document.getElementById('examDate').value);
-      const days = parseInt(document.getElementById('days').value);
-      const output = document.getElementById('output');
-      
-      if (!subject || !examDate || !days) {
-        output.innerHTML = "<b>⚠️ Remplis tous les champs.</b>";
-        return;
-      }
+function generatePlan() {
+  const subject = document.getElementById("subject").value;
+  const hours = document.getElementById("hours").value;
 
-      const today = new Date();
-      let plan = `<b>Planning de révision pour ${subject}</b><br>`;
-      for (let i = 0; i < days; i++) {
-        let day = new Date();
-        day.setDate(today.getDate() + i);
-        plan += `📅 ${day.toLocaleDateString('fr-FR')} : Réviser le chapitre ${i + 1}<br>`;
-      }
+  if (subject === "" || hours === "") {
+    alert("Veuillez remplir tous les champs");
+    return;
+  }
 
-      plan += `<br>🧠 Examen prévu le ${examDate.toLocaleDateString('fr-FR')}`;
-      output.innerHTML = plan;
-    }
+  const result = `
+📚 Planning de révision personnalisé
+
+Matière : ${subject}
+Temps disponible par jour : ${hours} heures
+
+👉 Conseil :
+- Révise ${subject} chaque jour pendant ${hours} heure(s)
+- Fais une pause toutes les 50 minutes
+- Révise 5 jours sur 7
+`;
+
+  document.getElementById("output").innerText = result;
+}
   </script>
 </body>
 </html>
+<input id="subject">
+<input id="hours">
+<div id="output"></div>
