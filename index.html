@@ -2,102 +2,100 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <title>PlanMyStudy</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PlanMyStudy - Générateur de Planning de Révision</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
       background: #f3f4f6;
-      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 500px;
+      margin: 40px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
     }
     h1 {
       text-align: center;
-      color: #2563eb;
+      color: #111827;
     }
-    .container {
-      max-width: 400px;
-      margin: auto;
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    label {
-      display: block;
-      margin-top: 10px;
-      font-weight: bold;
+    p {
+      text-align: center;
+      color: #4b5563;
     }
     input, button {
       width: 100%;
-      padding: 10px;
-      margin-top: 6px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
+      padding: 12px;
+      margin-top: 10px;
+      font-size: 16px;
     }
     button {
-      background: #2563eb;
+      background: #10b981;
       color: white;
       border: none;
+      border-radius: 5px;
       cursor: pointer;
-      font-weight: bold;
-      margin-top: 15px;
     }
     button:hover {
-      background: #1d4ed8;
+      background: #059669;
     }
     .result {
       margin-top: 20px;
+      background: #ecfdf5;
       padding: 15px;
-      background: #f9fafb;
-      border-radius: 8px;
+      border-radius: 5px;
+      white-space: pre-line;
     }
   </style>
 </head>
+
 <body>
-  <h1>📘 PlanMyStudy</h1>
+
   <div class="container">
-    <p>Génère ton planning de révision en quelques secondes.</p>
-    <label>Matière</label>
-    <input id="subject" type="text" placeholder="Ex: Mathématiques">
-    
-    <label>Date d'examen</label>
-    <input id="examDate" type="date">
+    <h1>📚 PlanMyStudy</h1>
+    <p>Génère ton planning de révision personnalisé</p>
 
-    <label>Nombre de jours de révision</label>
-    <input id="days" type="number" placeholder="Ex: 5">
-    
-    <button onclick="generatePlan()">Créer le planning</button>
+    <input id="subjects" type="text" placeholder="Matières (ex: Maths, Droit, Physique)">
+    <input id="hours" type="number" placeholder="Heures de révision par jour">
+
+    <button onclick="generatePlan()">Générer mon planning</button>
+
     <div id="output" class="result"></div>
-
-  <a href="https://forms.gle/v9JCUpp52LK6DDMj8" target="_blank">
-  <button style="background:#10b981;margin-top:10px;">S'inscrire à la version beta 📩</button>
-  </a>
   </div>
+
   <script>
-function generatePlan() {
-  const subject = document.getElementById("subject").value;
-  const hours = document.getElementById("hours").value;
+    function generatePlan() {
+      const subjects = document.getElementById("subjects").value;
+      const hours = document.getElementById("hours").value;
+      const output = document.getElementById("output");
 
-  if (subject === "" || hours === "") {
-    alert("Veuillez remplir tous les champs");
-    return;
-  }
-  const result = `
-📚 Planning de révision personnalisé
+      if (subjects === "" || hours === "") {
+        output.innerText = "❌ Merci de remplir tous les champs.";
+        return;
+      }
 
-Matière : ${subject}
-Temps disponible par jour : ${hours} heures
+      const subjectList = subjects.split(",");
 
-👉 Conseil :
-- Révise ${subject} chaque jour pendant ${hours} heure(s)
-- Fais une pause toutes les 50 minutes
-- Révise 5 jours sur 7
-`;
+      let plan = "✅ TON PLANNING DE RÉVISION\n\n";
+      plan += "⏰ Temps par jour : " + hours + " heure(s)\n\n";
 
-  document.getElementById("output").innerText = result;
-}
+      subjectList.forEach(subject => {
+        plan += "📘 " + subject.trim() + " : " + hours + "h par jour\n";
+      });
+
+      plan += "\n💡 Conseils :\n";
+      plan += "- Révise 5 jours par semaine\n";
+      plan += "- Fais une pause toutes les 50 minutes\n";
+      plan += "- Revois tes notes avant de dormir";
+
+      output.innerText = plan;
+    }
   </script>
+
 </body>
 </html>
+    
