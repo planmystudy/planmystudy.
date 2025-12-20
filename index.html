@@ -56,6 +56,13 @@
       border-radius: 8px;
       white-space: pre-line;
     }
+    .motivation {
+      margin-top: 15px;
+      background: #e0f2fe;
+      padding: 15px;
+      border-radius: 8px;
+      font-style: italic;
+    }
   </style>
 </head>
 
@@ -82,6 +89,7 @@
   <button onclick="generatePlan()">Générer mon planning personnalisé</button>
 
   <div id="output" class="result"></div>
+  <div id="motivation" class="motivation"></div>
 </div>
 
 <script>
@@ -90,9 +98,11 @@ function generatePlan() {
   const examDate = document.getElementById("examDate").value;
   const mentalState = document.getElementById("mentalState").value;
   const output = document.getElementById("output");
+  const motivationDiv = document.getElementById("motivation");
 
   if (!subjects || !examDate || !mentalState) {
     output.innerText = "❌ Merci de remplir tous les champs.";
+    motivationDiv.innerText = "";
     return;
   }
 
@@ -103,26 +113,29 @@ function generatePlan() {
 
   if (daysLeft <= 0) {
     output.innerText = "❌ La date de l'examen doit être dans le futur.";
+    motivationDiv.innerText = "";
     return;
   }
 
   const subjectList = subjects.split(",");
-  let message = "";
   let hoursPerDay = 2;
+  let motivationMessage = "";
 
   if (mentalState === "stressed") {
-    message = "🧠 Tu es stressé. Le planning est allégé pour éviter la surcharge.";
     hoursPerDay = 1.5;
+    motivationMessage =
+      "Tu ressens beaucoup de stress, et c’est normal. L’important n’est pas d’en faire trop, mais d’avancer un pas après l’autre. Fais-toi confiance, tu progresses plus que tu ne le crois.";
   } else if (mentalState === "normal") {
-    message = "🧠 Ton état est normal. Planning équilibré.";
     hoursPerDay = 2;
+    motivationMessage =
+      "Tu es dans un bon état d’esprit. En suivant ce planning régulièrement, tu construis une vraie confiance. Continue comme ça, tu es sur la bonne voie.";
   } else {
-    message = "🧠 Tu te sens confiant. Planning plus intense.";
     hoursPerDay = 2.5;
+    motivationMessage =
+      "Tu te sens confiant, c’est une force. Utilise cette énergie pour rester régulier, sans te surcharger. La constance fera la différence le jour de l’examen.";
   }
 
   let plan = `📅 Jours avant l'examen : ${daysLeft} jours\n\n`;
-  plan += message + "\n\n";
   plan += "📘 PLANNING DES PROCHAINS JOURS\n\n";
 
   const daysToShow = Math.min(daysLeft, 5);
@@ -132,17 +145,19 @@ function generatePlan() {
     subjectList.forEach(subject => {
       plan += `- ${subject.trim()} : ${hoursPerDay}h\n`;
     });
-    plan += "Pause obligatoire + révision légère le soir\n\n";
+    plan += "Pause + révision légère le soir\n\n";
   }
 
-  plan += "💡 CONSEILS FINALS\n";
-  plan += "- Dormir au moins 7h\n";
+  plan += "💡 Conseils clés :\n";
   plan += "- Réviser sans téléphone\n";
-  plan += "- Respirer profondément avant chaque session\n";
+  plan += "- Faire des pauses régulières\n";
+  plan += "- Bien dormir\n";
 
   output.innerText = plan;
+  motivationDiv.innerText = "💬 Message de motivation\n\n" + motivationMessage;
 }
 </script>
 
 </body>
 </html>
+  
